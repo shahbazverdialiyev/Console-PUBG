@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Generic_Collection_Data_Structure.Exceptions;
-    internal class CapacityException:Exception
+internal class CapacityException : Exception
+{
+    public CapacityException() : base("Capacity is full")
     {
-        public CapacityException():base("Capacity is full")
-        {
 
-        }
     }
+    public CapacityException(string message) : base(message)
+    {
+
+    }
+}

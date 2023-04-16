@@ -37,12 +37,13 @@ namespace Generic_Collection_Data_Structure.Models
         private Bullet? FireBullet;
         public Bullet PullTrigger()
         {
-            return FireBullet = Bullets.Peek();
+            Bullets.TryPeek(out FireBullet);
+            return FireBullet;
         }
         public (int count, Bullet bullet) Fire(FireType fireType)
         {
             Bullet? bullet = FireBullet;
-            if (bullet==null)
+            if (bullet == null)
             {
                 throw new BulletEmptyException();
             }
@@ -72,5 +73,6 @@ namespace Generic_Collection_Data_Structure.Models
                     throw new FireTypeException();
             }
         }
+
     }
 }

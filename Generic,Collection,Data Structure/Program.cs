@@ -1,6 +1,7 @@
 ﻿using Generic_Collection_Data_Structure.Models;
 using Generic_Collection_Data_Structure.Enums;
 using System.Collections.Generic;
+using Generic_Collection_Data_Structure.Exceptions;
 
 internal class Program
 {
@@ -16,82 +17,101 @@ internal class Program
         Console.WriteLine();
         Console.Write(">>>  ");
         string command = Console.ReadLine();
-        while (command != "6")
+        try
         {
-            if (command == "1")
+            while (command != "6")
             {
-                Console.WriteLine("-----------Create Weapon------------");
-                weapons.Add(CreateWeapon());
-                Console.WriteLine("----Created Weapon");
-            }
-            else if (command == "2")
-            {
-                Console.WriteLine("-----------Remove Weapon------------");
-                RemoveWeapon(weapons);
-                Console.WriteLine("Removed weapon");
-            }
-            else if (command == "3")
-            {
-                Console.WriteLine("-------Get Weapon By Capacity-------");
-                GetWeaponByCapacity(weapons).ForEach(w => Console.WriteLine($"Id: {w.Id}    Name: {w.Name}     Bullets: {w.Bullets.Count}"));
-            }
-            else if (command == "4")
-            {
-                Console.WriteLine("------------Get Weapons-------------");
-                weapons.ForEach(w => Console.WriteLine($"Id: {w.Id}    Name: {w.Name}     Bullets: {w.Bullets.Count}"));
-            }
-            else if (command == "5")
-            {
-                Console.WriteLine("-----------Select Weapon------------");
-                weapon = GetWeapon(weapons);
-                Console.WriteLine();
-                Console.WriteLine($"<--- {weapon.Id} {weapon.Name} --->");
-                Console.WriteLine();
-                Console.WriteLine("1. Fire \r\n2. PullTrigger\r\n3. Fill\r\n4.Back");
-                Console.WriteLine("--- ---- --- --- ---");
-                Console.Write(">>>  ");
-                command = Console.ReadLine();
-                while (command != "4")
+                if (command == "1")
                 {
-                    switch (command)
-                    {
-                        case "1":
-                            Console.Write("Atesh novu sechin  (");
-                            foreach (FireType type in Enum.GetValues(typeof(FireType)))
-                            {
-                                Console.Write(" " + type);
-                            }
-                            Console.Write(" ) : ");
-                            FireType FireType;
-                            while (!(FireType.TryParse(Console.ReadLine(), out FireType)))
-                            {
-                                Console.WriteLine("Yuxaridakilardan birini sechin!");
-                                Console.Write("Atesh novu sechin: ");
-                            }
-                            weapon.Fire(FireType);
-                            break;
-                        case "2":
-                            weapon.PullTrigger();
-                            break;
-                        case "3":
-                            weapon.Fill();
-                            break;
-                        default:
-                            Console.WriteLine("Yuxardaki komandalardan birini yazin");
-                            break;
-                    }
+                    Console.WriteLine("-----------Create Weapon------------");
+                    weapons.Add(CreateWeapon());
+                    Console.WriteLine("----Created Weapon");
+                }
+                else if (command == "2")
+                {
+                    Console.WriteLine("-----------Remove Weapon------------");
+                    RemoveWeapon(weapons);
+                    Console.WriteLine("Removed weapon");
+                }
+                else if (command == "3")
+                {
+                    Console.WriteLine("-------Get Weapon By Capacity-------");
+                    GetWeaponByCapacity(weapons).ForEach(w => Console.WriteLine($"Id: {w.Id}    Name: {w.Name}     Bullets: {w.Bullets.Count}"));
+                }
+                else if (command == "4")
+                {
+                    Console.WriteLine("------------Get Weapons-------------");
+                    weapons.ForEach(w => Console.WriteLine($"Id: {w.Id}    Name: {w.Name}     Bullets: {w.Bullets.Count}"));
+                }
+                else if (command == "5")
+                {
+                    Console.WriteLine("-----------Select Weapon------------");
+                    weapon = GetWeapon(weapons);
+                    Console.WriteLine();
+                    Console.WriteLine($"<---  {weapon.Id}  {weapon.Name}  --->");
+                    Console.WriteLine();
+                    Console.WriteLine("1. Fire \r\n2. PullTrigger\r\n3. Fill\r\n4.Back");
+                    Console.WriteLine("--- ---- --- --- ---");
                     Console.Write(">>>  ");
                     command = Console.ReadLine();
+                    while (command != "4")
+                    {
+                        switch (command)
+                        {
+                            case "1":
+                                Console.Write("Atesh novu sechin  (");
+                                foreach (FireType type in Enum.GetValues(typeof(FireType)))
+                                {
+                                    Console.Write(" " + type);
+                                }
+                                Console.Write(" ) : ");
+                                FireType FireType;
+                                while (!(FireType.TryParse(Console.ReadLine(), out FireType)))
+                                {
+                                    Console.WriteLine("Yuxaridakilardan birini sechin!");
+                                    Console.Write("Atesh novu sechin: ");
+                                }
+                                weapon.Fire(FireType);
+                                Console.WriteLine($"Fired {FireType}");
+                                break;
+                            case "2":
+                                weapon.PullTrigger();
+                                Console.WriteLine("The trigger pulled!");
+                                break;
+                            case "3":
+                                weapon.Fill();
+                                Console.WriteLine($"Bullet: {weapon.Bullets.Count}");
+                                break;
+                            default:
+                                Console.WriteLine("Yuxardaki komandalardan birini yazin");
+                                break;
+                        }
+                        Console.Write(">>>  ");
+                        command = Console.ReadLine();
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Yuxaridaki kommandalardan birini yazin");
+                }
+                Console.Write(">>>  ");
+                command = Console.ReadLine();
             }
-            else
-            {
-                Console.WriteLine("Yuxaridaki kommandalardan birini yazin");
-            }
-            Console.Write(">>>  ");
-            command = Console.ReadLine();
         }
-
+        catch (BulletEmptyException ex)
+        {
+            Console.WriteLine();
+            Console.WriteLine(ex.Message);
+        }
+        catch (CapacityException ex)
+        {
+            Console.WriteLine();
+            Console.WriteLine(ex.Message);
+        }catch (FireTypeException ex)
+        {
+            Console.WriteLine();
+            Console.WriteLine(ex.Message);
+        }
 
     }
     private static Weapon CreateWeapon()
@@ -119,7 +139,7 @@ internal class Program
         }
         return new Weapon(name, BulletType, BulletCapacity);
     }
-    
+
     private static void RemoveWeapon(List<Weapon> weapons)
     {
         int id;
