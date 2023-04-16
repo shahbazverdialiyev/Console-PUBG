@@ -7,7 +7,6 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-
         Weapon weapon;
         Bullet bullet;
         List<Weapon> weapons = new List<Weapon>();
@@ -16,7 +15,7 @@ internal class Program
         Console.WriteLine("---------------------- ------------------- ------------------------- --------");
         Console.WriteLine();
         Console.Write(">>>  ");
-        string command = Console.ReadLine();
+        string command = Console.ReadLine().Trim();
         try
         {
             while (command != "6")
@@ -53,7 +52,7 @@ internal class Program
                     Console.WriteLine("1. Fire \r\n2. PullTrigger\r\n3. Fill\r\n4.Back");
                     Console.WriteLine("--- ---- --- --- ---");
                     Console.Write(">>>  ");
-                    command = Console.ReadLine();
+                    command = Console.ReadLine().Trim();
                     while (command != "4")
                     {
                         switch (command)
@@ -87,7 +86,7 @@ internal class Program
                                 break;
                         }
                         Console.Write(">>>  ");
-                        command = Console.ReadLine();
+                        command = Console.ReadLine().Trim();
                     }
                 }
                 else
@@ -95,7 +94,7 @@ internal class Program
                     Console.WriteLine("Yuxaridaki kommandalardan birini yazin");
                 }
                 Console.Write(">>>  ");
-                command = Console.ReadLine();
+                command = Console.ReadLine().Trim();
             }
         }
         catch (BulletEmptyException ex)
@@ -117,7 +116,7 @@ internal class Program
     private static Weapon CreateWeapon()
     {
         Console.Write("Name: ");
-        string name = Console.ReadLine();
+        string name = Console.ReadLine().Trim();
         Console.Write("Mermi novu sechin  (");
         foreach (BulletType type in Enum.GetValues(typeof(BulletType)))
         {
@@ -125,14 +124,14 @@ internal class Program
         }
         Console.Write(" ) : ");
         BulletType BulletType;
-        while (!(BulletType.TryParse(Console.ReadLine(), out BulletType)))
+        while (!(BulletType.TryParse(Console.ReadLine().Trim(), out BulletType)))
         {
             Console.WriteLine("Yuxaridakilardan birini sechin!");
             Console.Write("Mermi novu sechin: ");
         }
         Console.Write("Mermi Tutumu: ");
         int BulletCapacity;
-        while (!(Int32.TryParse(Console.ReadLine(), out BulletCapacity)))
+        while (!(Int32.TryParse(Console.ReadLine().Trim(), out BulletCapacity)))
         {
             Console.WriteLine("Eded yazin!");
             Console.Write("Mermi Tutumu: ");
@@ -146,7 +145,7 @@ internal class Program
         while (true)
         {
             Console.Write("Id: ");
-            if (!(Int32.TryParse(Console.ReadLine(), out id)))
+            if (!(Int32.TryParse(Console.ReadLine().Trim(), out id)))
             {
                 Console.WriteLine("Eded yazin!");
                 continue;
@@ -168,7 +167,7 @@ internal class Program
         while (true)
         {
             Console.Write("Capacity: ");
-            if (!(Int32.TryParse(Console.ReadLine(), out capacity)))
+            if (!(Int32.TryParse(Console.ReadLine().Trim(), out capacity)))
             {
                 Console.WriteLine("Eded yazin!");
                 continue;
@@ -188,7 +187,7 @@ internal class Program
         while (true)
         {
             Console.Write("Id: ");
-            if (!(Int32.TryParse(Console.ReadLine(), out id)))
+            if (!(Int32.TryParse(Console.ReadLine().Trim(), out id)))
             {
                 Console.WriteLine("Eded yazin!");
                 continue;
