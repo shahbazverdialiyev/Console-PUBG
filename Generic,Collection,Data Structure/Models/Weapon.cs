@@ -14,17 +14,38 @@ namespace Generic_Collection_Data_Structure.Models
         public string Name { get; }
         public BulletType BulletType { get; }
         public int BulletCapacity { get; }
-        public Stack<Bullet> Bullets=new Stack<Bullet>();
-        public Weapon(string name,BulletType bulletType, int bulletCapacity)
+        public Stack<Bullet> Bullets = new Stack<Bullet>();
+        public Weapon(string name, BulletType bulletType, int bulletCapacity)
         {
             Id = ++id;
             Name = name;
             BulletType = bulletType;
             BulletCapacity = bulletCapacity;
         }
+        public void Fill()
+        {
+            if (BulletCapacity == Bullets.Count)
+            {
+                throw new CapacityException();
+            }
+            for (int i = Bullets.Count; i < BulletCapacity; i++)
+            {
+                Bullet bullet = new Bullet(BulletType);
+                Bullets.Push(bullet);
+            }
+        }
+        private Bullet? FireBullet;
+        public Bullet PullTrigger()
+        {
+            return FireBullet = Bullets.Peek();
+        }
         public (int count, Bullet bullet) Fire(FireType fireType)
         {
-            Bullet? bullet;
+            Bullet? bullet = FireBullet;
+            if (bullet==null)
+            {
+                throw new BulletEmptyException();
+            }
             switch (fireType)
             {
                 case FireType.tekli:
@@ -48,21 +69,8 @@ namespace Generic_Collection_Data_Structure.Models
                     while (Bullets.TryPop(out bullet)) { }
                     return (Bullets.Count, bullet);
                 default:
-                    throw new Exception();
+                    throw new FireTypeException();
             }
         }
-        public void Fill()
-        {
-            if (BulletCapacity == Bullets.Count)
-            {
-                throw new CapacityException();
-            }
-            for (int i = Bullets.Count; i < BulletCapacity; i++)
-            {
-                Bullet bullet = new Bullet(BulletType);
-                Bullets.Push(bullet);
-            }
-        }
-        public Bullet PullTrigger() => Bullets.Peek();
     }
 }

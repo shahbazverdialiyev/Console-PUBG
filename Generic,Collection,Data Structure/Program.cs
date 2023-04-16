@@ -153,7 +153,7 @@ internal class Program
                 Console.WriteLine("Eded yazin!");
                 continue;
             }
-            findWeapons = weapons.FindAll(w => w.Id > capacity);
+            findWeapons = weapons.FindAll(w => w.BulletCapacity > capacity);
             if (findWeapons == null)
             {
                 Console.WriteLine("Silah tapilmadi");
